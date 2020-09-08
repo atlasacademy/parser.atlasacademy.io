@@ -19,7 +19,7 @@ use MyCLabs\Enum\Enum;
  * @method static SubmissionStatus ERROR_MISSING_DROPS()
  * @method static SubmissionStatus ERROR_QP_MISMATCH()
  * @method static SubmissionStatus SUCCESS()
- * @method static SubmissionStatus SUCCESS_MATCHED()
+ * @method static SubmissionStatus SUCCESS_MULTIPLE()
  */
 class SubmissionStatus extends Enum
 {
@@ -31,14 +31,14 @@ class SubmissionStatus extends Enum
     private const PARSING = 11;
     private const PARSED = 12;
 
-    private const ERROR_FAILURE = 100;
-    private const ERROR_MISSING_NODE = 101;
-    private const ERROR_UNKNOWN_DROPS = 102;
-    private const ERROR_INVALID_DROPS = 103;
-    private const ERROR_MISSING_DROPS = 104;
-    private const ERROR_QP_MISMATCH = 105;
+    private const ERROR_FAILURE = 20;
+    private const ERROR_MISSING_NODE = 21;
+    private const ERROR_UNKNOWN_DROPS = 22;
+    private const ERROR_INVALID_DROPS = 23;
+    private const ERROR_MISSING_DROPS = 24;
+    private const ERROR_QP_MISMATCH = 25;
 
-    private const SUCCESS = 200;
-    private const SUCCESS_MATCHED = 201;
+    private const SUCCESS = 30;
+    private const SUCCESS_MULTIPLE = 31;
 
 }

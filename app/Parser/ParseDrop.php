@@ -67,9 +67,23 @@ class ParseDrop
         return preg_match('/^item[0-9]{3}$/', $this->data['name']);
     }
 
+    public function raw(): array
+    {
+        return $this->data;
+    }
+
     public function stack(): int
     {
         return $this->data['stack'];
     }
 
+    public function x(): int
+    {
+        return $this->data['x'];
+    }
+
+    public function y(): int
+    {
+        return $this->data['y'];
+    }
 }

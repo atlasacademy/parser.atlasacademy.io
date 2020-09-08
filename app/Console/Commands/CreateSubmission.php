@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Event;
-use App\Node;
 use App\Submission;
 use Illuminate\Console\Command;
 
@@ -73,6 +72,7 @@ class CreateSubmission extends Command
         }
 
         $type = $this->output->choice('Type', ['simple', 'full']);
+
         $image = $this->output->ask('Input source');
         if (!$image) {
             $this->output->warning('Image is required');
@@ -80,8 +80,15 @@ class CreateSubmission extends Command
             return 0;
         }
 
-        $submission = Submission::create($node, $type, $image);
-        $this->output->success('Successfully created submissions: ' . $submission->id);
+        $submitter = $this->output->ask('Submitter');
+        if (!$submitter) {
+            $this->output->warning('Submitter is required');
+
+            return 0;
+        }
+
+        $submission = Submission::create($node, $type, $image, $submitter);
+        $this->output->success('Successfully created submission: ' . $submission->id);
 
         return 0;
     }

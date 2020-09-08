@@ -27,4 +27,9 @@ use Illuminate\Database\Eloquent\Model;
 class Drop extends Model
 {
     protected $table = 'event_node_drops';
+
+    public function isEventOnly(): bool
+    {
+        return $this->uid[0] === "E";
+    }
 }

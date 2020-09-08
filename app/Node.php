@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Drop[] $drops
  * @property-read int|null $drops_count
+ * @property-read \App\Event $event
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Submission[] $submissions
+ * @property-read int|null $submissions_count
  * @method static \Illuminate\Database\Eloquent\Builder|Node newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Node newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Node query()
@@ -35,5 +38,15 @@ class Node extends Model
     public function drops()
     {
         return $this->hasMany(Drop::class);
+    }
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class);
+    }
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
     }
 }

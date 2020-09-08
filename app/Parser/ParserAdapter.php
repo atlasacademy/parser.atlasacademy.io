@@ -28,6 +28,21 @@ class ParserAdapter
         return File::exists($this->jsonPath($submission));
     }
 
+    public function hasUnknownCode(string $code): bool
+    {
+        [$path, $folder] = $this->findTemplate($code);
+
+        return boolval($path);
+    }
+
+    public function renameUnknownCode($from, $to)
+    {
+        [$fromPath, $folder] = $this->findTemplate($from);
+
+        $toPath = $this->templatePath($folder, $to);
+        File::move($fromPath, $toPath);
+    }
+
     public function input(Submission $submission)
     {
         $client = new Client();
@@ -36,6 +51,21 @@ class ParserAdapter
         ]);
 
         File::move($this->stagePath($submission), $this->inputPath($submission));
+    }
+
+    private function findTemplate(string $code): array
+    {
+
+        $dirs = File::directories("/parser/item");
+
+        foreach ($dirs as $dir) {
+            $folder = File::basename($dir);
+            $path = $this->templatePath($folder, $code);
+            if (File::exists($path))
+                return [$path, $folder];
+        }
+
+        return [null, null];
     }
 
     private function inputPath(Submission $submission): string
@@ -56,6 +86,11 @@ class ParserAdapter
     private function stagePath(Submission $submission): string
     {
         return "/parser/stage/{$submission->id}";
+    }
+
+    private function templatePath(string $directory, string $template): string
+    {
+        return "/parser/item/{$directory}/{$template}.png";
     }
 
 }

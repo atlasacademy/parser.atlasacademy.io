@@ -32,4 +32,23 @@ class SubmissionApi
         return new SubmissionEvent(json_decode($body, true));
     }
 
+    public function submitRun(SubmissionExport $export): array
+    {
+        $response = $this->client->post("/submit/run", [
+            'json' => $export->toArray(),
+        ]);
+
+        if ($response->getStatusCode() !== 200) {
+            throw new \Exception("Failed to send submission");
+        }
+
+        $body = $response->getBody()->getContents();
+        $json = json_decode($body, true);
+
+        return [
+            $json['receipt'] ?? null,
+            $json['missing_drops'] ?? false,
+        ];
+    }
+
 }

@@ -18,14 +18,17 @@ class CreateSubmissionsTable extends Migration
             $table->unsignedBigInteger('node_id');
             $table->enum('type', ['simple', 'full']);
             $table->text('image');
+            $table->string('submitter');
             $table->unsignedSmallInteger('status')->default(0);
             $table->text('parse')->nullable();
-            $table->unsignedBigInteger('parent_id')->nullable();
-            $table->string('submission_uid')->nullable();
+            $table->unsignedBigInteger('export_id')->nullable();
+            $table->unsignedSmallInteger('export_order')->nullable();
             $table->timestamps();
 
             $table->index('node_id');
+            $table->index('submitter');
             $table->index('status');
+            $table->index(['export_id', 'export_order']);
         });
     }
 

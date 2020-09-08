@@ -49,5 +49,7 @@ class CreateAdmin extends Command
         $user->save();
 
         $this->output->writeln("DONE: {$user->id}");
+
+        return 0;
     }
 }
