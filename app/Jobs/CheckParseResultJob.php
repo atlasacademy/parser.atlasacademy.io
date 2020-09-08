@@ -42,7 +42,7 @@ class CheckParseResultJob implements ShouldQueue
     public function handle()
     {
         if (!$this->submission->status->equals(SubmissionStatus::PARSED())) {
-            return;
+//            return;
         }
 
         $node = Node::query()
@@ -94,7 +94,7 @@ class CheckParseResultJob implements ShouldQueue
             return;
         }
 
-//        ExportSubmissionJob::dispatch([$this->submission->id]);
+        ExportSubmissionJob::dispatch([$this->submission->id]);
     }
 
 }

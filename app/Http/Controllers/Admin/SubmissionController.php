@@ -51,17 +51,13 @@ class SubmissionController extends Controller
 
     public function show(Submission $submission)
     {
-        $eventDrops = $submission->node->drops
-            ->filter(function (Drop $drop) {
-                return $drop->isEventOnly();
-            })
-            ->values();
+        $drops = $submission->node->drops->values();
 
         $parseWrapper = $submission->parse ? new ParseWrapper($submission->parse) : null;
 
         return response()->view('admin-submission-show', [
             'submission' => $submission,
-            'eventDrops' => $eventDrops,
+            'drops' => $drops,
             'parseWrapper' => $parseWrapper
         ]);
     }

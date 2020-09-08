@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CheckParseResultJob;
 use App\Jobs\FetchParseJob;
 use App\Submission;
 use Illuminate\Console\Command;
@@ -41,6 +42,7 @@ class TestCommand extends Command
     {
         Submission::parse(Submission::find(3));
 //        FetchParseJob::dispatch(Submission::find(3));
+//        CheckParseResultJob::dispatchNow(Submission::find(3));
 
         return 0;
     }

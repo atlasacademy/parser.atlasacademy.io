@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\Submission $submission
- * @var \App\Drop[]|\Illuminate\Database\Eloquent\Collection $eventDrops
+ * @var \App\Drop[]|\Illuminate\Database\Eloquent\Collection $drops
  * @var \App\Parser\ParseWrapper|null $parseWrapper
  */
 ?>
@@ -12,6 +12,12 @@
     <tr>
         <th>ID</th>
         <td>{{ $submission->id }}</td>
+    </tr>
+    <tr>
+        <th>Node</th>
+        <td>
+            <a href="/admin/node/{{ $submission->node->id }}">Link</a>
+        </td>
     </tr>
     <tr>
         <th>Source</th>
@@ -46,17 +52,24 @@
                     <tr>
                         <?php for ($x = 0; $x < count($dropLine); $x++) : ?>
                         <td>
-                            {{ $dropLine[$x]->code() }} x {{ $dropLine[$x]->stack() }}<br/>
+                            {{ $dropLine[$x]->code() }} x {{ $dropLine[$x]->stack() }}
+
                             @if ($dropLine[$x]->isUnknown())
+                                <br/>
                                 <form method="post" action="/admin/parser/fix-unknown" style="margin-bottom: 0;">
-                                    <input type="hidden" name="from" value="{{ $dropLine[$x]->code() }}"/>
-                                    <select name="to">
-                                        @foreach ($eventDrops as $eventDrop)
-                                            <option>{{ $eventDrop->uid }}</option>
+                                    <input type="hidden" name="id" value="{{ $dropLine[$x]->id() }}"/>
+                                    <select name="code">
+                                        @foreach ($drops as $drop)
+                                            <option>{{ $drop->uid }}</option>
                                         @endforeach
                                     </select>
                                     <input type="submit" value="Fix"/>
                                 </form>
+                            @endif
+
+                            @if (!$dropLine[$x]->isInNode($submission->node))
+                                <br/>
+                                <span style="color: red">INVALID</span>
                             @endif
                         </td>
                         <?php endfor; ?>

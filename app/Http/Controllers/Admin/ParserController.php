@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Parser\ParserAdapter;
 use App\Submission;
 use App\SubmissionStatus;
+use App\TemplateMap;
 use Illuminate\Http\Request;
 
 class ParserController extends Controller
@@ -14,15 +15,18 @@ class ParserController extends Controller
     public function fixUnknown(Request $request, ParserAdapter $parserAdapter)
     {
         $data = $request->validate([
-            "from" => "required|alpha_num",
-            "to" => "required|alpha_num"
+            "id" => "required|integer",
+            "code" => "required|alpha_num"
         ]);
 
-        if (!$parserAdapter->hasUnknownCode($data['from'])) {
-            return $this->redirectWithError('/admin', 'From code not found');
+        $map = TemplateMap::query()->where('id', '=', $data['id'])->first();
+        if (!$map) {
+            $map = new TemplateMap();
+            $map->id = $data['id'];
         }
 
-        $parserAdapter->renameUnknownCode($data['from'], $data['to']);
+        $map->code = $data['code'];
+        $map->save();
 
         $submissions = Submission::query()
             ->where('status', '=', SubmissionStatus::ERROR_UNKNOWN_DROPS()->getValue())

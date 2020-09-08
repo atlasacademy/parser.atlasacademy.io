@@ -3,12 +3,12 @@
 namespace App\Parser;
 
 use App\Node;
+use App\TemplateMap;
 
 class ParseDrop
 {
-    private const DEFAULT_MAPPING = [
-        5 => "QUEST_QP",
-    ];
+    private const QP = 1;
+    private const QUEST_QP = 5;
 
     /**
      * @var array
@@ -22,11 +22,21 @@ class ParseDrop
 
     public function code(): string
     {
-        $id = $this->data['id'];
-        if (array_key_exists($id, self::DEFAULT_MAPPING))
-            return self::DEFAULT_MAPPING[$id];
+        if ($this->isQuestQp())
+            return "QUEST_QP";
 
-        return $this->data['name'];
+        if ($this->data['id'] === self::QP) {
+            [$code, $stack] = $this->getQpInfo();
+
+            return $code;
+        }
+
+        return TemplateMap::getValue($this->data['id'], $this->data['name']);
+    }
+
+    public function id(): int
+    {
+        return $this->data['id'];
     }
 
     public function isCurrency(): bool
@@ -39,9 +49,9 @@ class ParseDrop
 
     public function isDefaultDrop(): bool
     {
-        $id = $this->data['id'];
+        $code = $this->code();
 
-        return array_key_exists($id, self::DEFAULT_MAPPING);
+        return $code[0] !== "E";
     }
 
     public function isInNode(Node $node)
@@ -59,12 +69,15 @@ class ParseDrop
 
     public function isQuestQp(): bool
     {
-        return $this->data['id'] === 5;
+        return $this->data['id'] === self::QUEST_QP;
     }
 
     public function isUnknown(): bool
     {
-        return preg_match('/^item[0-9]{3}$/', $this->data['name']);
+        if ($this->isQuestQp())
+            return false;
+
+        return !TemplateMap::hasValue($this->data['id']);
     }
 
     public function raw(): array
@@ -74,6 +87,12 @@ class ParseDrop
 
     public function stack(): int
     {
+        if ($this->data['id'] === self::QP) {
+            [$code, $stack] = $this->getQpInfo();
+
+            return $stack;
+        }
+
         return $this->data['stack'];
     }
 
@@ -85,5 +104,25 @@ class ParseDrop
     public function y(): int
     {
         return $this->data['y'];
+    }
+
+    private function getQpInfo(): array
+    {
+        $stack = $this->data['stack'];
+
+        switch ($stack) {
+            case 1000:
+                return ['Q010', 1];
+            case 1500:
+                return ['Q015', 1];
+            case 2000:
+                return ['Q020', 1];
+            case 3000:
+                return ['Q030', 1];
+            case 5000:
+                return ['Q050', 1];
+            default:
+                return ['QP00', $stack];
+        }
     }
 }

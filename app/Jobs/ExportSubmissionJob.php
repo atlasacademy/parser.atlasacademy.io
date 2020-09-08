@@ -51,13 +51,13 @@ class ExportSubmissionJob implements ShouldQueue
             $submission->save();
         }
 
-        [$receipt, $missingDrops] = $submissionApi->submitRun($submissionExport);
-        $export->uid = $receipt;
-        $export->save();
-
-        if ($missingDrops) {
-            ImportEventJob::dispatch($node->event);
-        }
+//        [$receipt, $missingDrops] = $submissionApi->submitRun($submissionExport);
+//        $export->uid = $receipt;
+//        $export->save();
+//
+//        if ($missingDrops) {
+//            ImportEventJob::dispatch($node->event);
+//        }
     }
 
     /**
