@@ -10,10 +10,9 @@ class ParseDrop
     private const QP = 1;
     private const QUEST_QP = 5;
 
-    /**
-     * @var array
-     */
+    private $code = null;
     private $data;
+    private $unknown = null;
 
     public function __construct(array $data)
     {
@@ -22,16 +21,19 @@ class ParseDrop
 
     public function code(): string
     {
+        if ($this->code !== null)
+            return $this->code;
+
         if ($this->isQuestQp())
-            return "QUEST_QP";
+            return $this->code = "QUEST_QP";
 
         if ($this->data['id'] === self::QP) {
             [$code, $stack] = $this->getQpInfo();
 
-            return $code;
+            return $this->code = $code;
         }
 
-        return TemplateMap::getValue($this->data['id'], $this->data['name']);
+        return $this->code = TemplateMap::getValue($this->data['id'], $this->data['name']);
     }
 
     public function id(): int
@@ -74,10 +76,13 @@ class ParseDrop
 
     public function isUnknown(): bool
     {
-        if ($this->isQuestQp())
-            return false;
+        if ($this->unknown !== null)
+            return $this->unknown;
 
-        return !TemplateMap::hasValue($this->data['id']);
+        if ($this->isQuestQp())
+            return $this->unknown = false;
+
+        return $this->unknown = !TemplateMap::hasValue($this->data['id']);
     }
 
     public function raw(): array

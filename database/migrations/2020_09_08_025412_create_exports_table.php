@@ -15,11 +15,13 @@ class CreateExportsTable extends Migration
     {
         Schema::create('exports', function (Blueprint $table) {
             $table->id();
-            $table->string('uid')->nullable();
+            $table->unsignedBigInteger('node_id');
+            $table->text('type');
             $table->text('payload');
             $table->text('parse');
             $table->string('submitter');
-            $table->string('token');
+            $table->string('receipt')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }

@@ -6,6 +6,12 @@
 
 @include('_messages')
 
+<ul>
+    <li>
+        <a href="/admin/event/{{ $event->id }}/refresh">Refresh Event</a>
+    </li>
+</ul>
+
 <p>Nodes</p>
 
 <ul>

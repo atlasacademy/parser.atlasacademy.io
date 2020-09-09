@@ -36,7 +36,10 @@ class ParserController extends Controller
             Submission::parse($submission);
         }
 
-        return $this->redirectWithSuccess('/admin', 'Successfully renamed template');
+        return $this->redirectWithSuccess(
+            url()->previous('/admin'),
+            'Successfully renamed template'
+        );
     }
 
 }

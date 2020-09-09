@@ -32,6 +32,7 @@ class SubmissionExport
         $this->node = $node;
         $this->submitter = $submitter;
         $this->token = Uuid::uuid4()->toString();
+        $this->type = $type;
     }
 
     public function addDrop(Drop $drop, int $count)
@@ -67,6 +68,7 @@ class SubmissionExport
                 "uid" => $drop->uid,
                 "quantity" => $drop->quantity,
                 "count" => $this->drops[$key] ?? 0,
+                "ignored" => false,
             ];
         }
 

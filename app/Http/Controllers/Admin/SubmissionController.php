@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Drop;
 use App\Http\Controllers\Controller;
 use App\Node;
 use App\Parser\ParseWrapper;
@@ -51,15 +50,24 @@ class SubmissionController extends Controller
 
     public function show(Submission $submission)
     {
-        $drops = $submission->node->drops->values();
-
-        $parseWrapper = $submission->parse ? new ParseWrapper($submission->parse) : null;
+        $drops = $submission->node->drops->pluck('uid')->unique()->values();
+        $parseWrapper = ParseWrapper::create($submission);
 
         return response()->view('admin-submission-show', [
             'submission' => $submission,
             'drops' => $drops,
             'parseWrapper' => $parseWrapper
         ]);
+    }
+
+    public function reparse(Submission $submission)
+    {
+        Submission::parse($submission);
+
+        return $this->redirectWithError(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Reparsing Submission"
+        );
     }
 
     public function create(Request $request)

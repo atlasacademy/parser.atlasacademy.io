@@ -46,6 +46,28 @@
 
 <hr />
 
+<form method="post" action="/admin/node/{{ $node->id }}/update-qp">
+    <p><b>Update QP Reward</b></p>
+    <table>
+        <tbody>
+        <tr>
+            <td>Amount:</td>
+            <td>
+                <input type="text" name="qp" value="{{ $node->qp }}"/>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Update"/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<hr />
+
 <form method="post" action="/admin/submission/create">
     <input type="hidden" name="node_id" value="{{ $node->id }}" />
     <p><b>Create New Submission</b></p>

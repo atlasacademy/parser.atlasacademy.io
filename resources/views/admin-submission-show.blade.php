@@ -1,7 +1,7 @@
 <?php
 /**
  * @var \App\Submission $submission
- * @var \App\Drop[]|\Illuminate\Database\Eloquent\Collection $drops
+ * @var string[] $drops
  * @var \App\Parser\ParseWrapper|null $parseWrapper
  */
 ?>
@@ -20,6 +20,14 @@
         </td>
     </tr>
     <tr>
+        <th>Export</th>
+        <td>
+            @if ($submission->export_id)
+                <a href="/admin/export/{{ $submission->export_id }}">Link</a>
+            @endif
+        </td>
+    </tr>
+    <tr>
         <th>Source</th>
         <td>{{ $submission->image }}</td>
     </tr>
@@ -30,6 +38,18 @@
     <tr>
         <th>Status</th>
         <td>{{ $submission->status->getKey() }}</td>
+    </tr>
+    <tr>
+        <th>Actions</th>
+        <td>
+            <ul>
+                @if ($submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
+                    <li>
+                        <a href="/admin/submission/{{ $submission->id }}/reparse">Reparse</a>
+                    </li>
+                @endif
+            </ul>
+        </td>
     </tr>
     <tr>
         <th>Image</th>
@@ -45,38 +65,7 @@
         <th>Map</th>
         <td>
             @if ($parseWrapper)
-                <table border="1" cellpadding="5px" width="100%">
-                    <tbody>
-                    <?php for ($y = 0; $y <= $parseWrapper->lastLine(); $y++) : ?>
-                    <?php $dropLine = $parseWrapper->dropLine($y); ?>
-                    <tr>
-                        <?php for ($x = 0; $x < count($dropLine); $x++) : ?>
-                        <td>
-                            {{ $dropLine[$x]->code() }} x {{ $dropLine[$x]->stack() }}
-
-                            @if ($dropLine[$x]->isUnknown())
-                                <br/>
-                                <form method="post" action="/admin/parser/fix-unknown" style="margin-bottom: 0;">
-                                    <input type="hidden" name="id" value="{{ $dropLine[$x]->id() }}"/>
-                                    <select name="code">
-                                        @foreach ($drops as $drop)
-                                            <option>{{ $drop->uid }}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="submit" value="Fix"/>
-                                </form>
-                            @endif
-
-                            @if (!$dropLine[$x]->isInNode($submission->node))
-                                <br/>
-                                <span style="color: red">INVALID</span>
-                            @endif
-                        </td>
-                        <?php endfor; ?>
-                    </tr>
-                    <?php endfor; ?>
-                    </tbody>
-                </table>
+                @include('parse-map', ['parseWrapper' => $parseWrapper, 'node' => $submission->node, 'drops' => $drops])
             @endif
         </td>
     </tr>

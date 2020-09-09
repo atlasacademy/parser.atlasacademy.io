@@ -23,6 +23,13 @@ class EventController extends Controller
         return response()->view('admin-event-show', ['event' => $event]);
     }
 
+    public function refresh(Event $event)
+    {
+        ImportEventJob::dispatch($event);
+
+        return $this->redirectWithSuccess("/admin/event/{$event->id}", 'Refreshing event');
+    }
+
     public function create(Request $request, SubmissionApi $submissionApi)
     {
         $data = $request->validate([

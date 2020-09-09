@@ -33,10 +33,13 @@ class ExportSubmissionJob implements ShouldQueue
     {
         $submissions = $this->getSubmissions();
         $node = $submissions[0]->node;
+        $type = $submissions[0]->type;
         $parseWrapper = $this->makeParseWrapper($submissions);
         $submissionExport = $this->makeSubmissionExport($parseWrapper, $submissions);
 
         $export = new Export();
+        $export->node_id = $node->id;
+        $export->type = $type;
         $export->payload = json_encode($submissionExport->toArray());
         $export->parse = json_encode($parseWrapper->toArray());
         $export->submitter = $submissionExport->submitter();
@@ -85,11 +88,9 @@ class ExportSubmissionJob implements ShouldQueue
      */
     private function makeParseWrapper(array $submissions): ParseWrapper
     {
-        $parseWrapper = new ParseWrapper($submissions[0]->parse);
+        $parseWrapper = ParseWrapper::create($submissions[0]);
         foreach (array_slice($submissions, 1) as $submission) {
-            $parseWrapper->append(
-                new ParseWrapper($submission->parse)
-            );
+            $parseWrapper->append(ParseWrapper::create($submission));
         }
 
         return $parseWrapper;

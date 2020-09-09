@@ -4,14 +4,22 @@ namespace App\Parser;
 
 use App\Drop;
 use App\Node;
+use App\Submission;
 
 class ParseWrapper
 {
     private $data;
+    private $type;
 
-    public function __construct(string $parse)
+    public function __construct(string $type, string $parse)
     {
         $this->data = json_decode($parse, true);
+        $this->type = $type;
+    }
+
+    public static function create(Submission $submission): ?self
+    {
+        return $submission->parse ? new self($submission->type, $submission->parse) : null;
     }
 
     public function append(self $append)
@@ -97,13 +105,19 @@ class ParseWrapper
         return array_reduce(
             $this->drops(),
             function (bool $carry, ParseDrop $drop) use ($node): bool {
-                return $carry ?: (!$drop->isInNode($node));
+                if ($carry)
+                    return true;
+
+                if ($this->type === "simple" && !$drop->isDefaultDrop())
+                    return false;
+
+                return !$drop->isInNode($node);
             },
             false
         );
     }
 
-    public function hasMissingDrops(bool $full): bool
+    public function hasMissingDrops(): bool
     {
         $drops = $this->drops();
         if (!count($drops))
@@ -113,7 +127,7 @@ class ParseWrapper
         if (!$firstDrop->isQuestQp())
             return true;
 
-        if ($full) {
+        if ($this->type === "full") {
             $dropCount = $this->data['drop_count'];
 
             $drops = array_filter(
@@ -198,7 +212,7 @@ class ParseWrapper
 
         $drops = array_filter(
             $this->drops(),
-            function (Drop $drop) use ($code, $stack) {
+            function (ParseDrop $drop) use ($code, $stack) {
                 return $drop->code() === $code && $drop->stack() === $stack;
             }
         );

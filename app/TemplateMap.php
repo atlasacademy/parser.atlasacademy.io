@@ -25,43 +25,17 @@ class TemplateMap extends Model
     public $incrementing = false;
     protected $table = "template_maps";
 
-    private static $maps = [];
-
     public static function getValue(int $id, string $default): string
     {
-        if (array_key_exists($id, self::$maps)) {
-            $value = self::$maps[$id];
-
-            return $value === null ? $default : $value;
-        }
-
         $map = static::query()->where('id', '=', $id)->first();
-        if (!$map) {
-            self::$maps[$id] = null;
 
-            return $default;
-        }
-
-        return self::$maps[$id] = $map->code;
+        return $map ? $map->code : $default;
     }
 
     public static function hasValue(int $id): bool
     {
-        if (array_key_exists($id, self::$maps)) {
-            $value = self::$maps[$id];
+        $count = static::query()->where('id', '=', $id)->count();
 
-            return $value !== null;
-        }
-
-        $map = static::query()->where('id', '=', $id)->first();
-        if (!$map) {
-            self::$maps[$id] = null;
-
-            return false;
-        }
-
-        self::$maps[$id] = $map->code;
-
-        return true;
+        return $count > 0;
     }
 }

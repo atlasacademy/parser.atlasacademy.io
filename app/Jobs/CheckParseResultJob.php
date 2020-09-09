@@ -41,18 +41,14 @@ class CheckParseResultJob implements ShouldQueue
      */
     public function handle()
     {
-        if (!$this->submission->status->equals(SubmissionStatus::PARSED())) {
-//            return;
-        }
-
         $node = Node::query()
             ->with('drops')
             ->where('id', '=', $this->submission->node_id)
             ->first();
 
-        $parseWrapper = new ParseWrapper($this->submission->parse);
+        $parseWrapper = ParseWrapper::create($this->submission);
 
-        if (!$parseWrapper->isValid()) {
+        if (!$parseWrapper || !$parseWrapper->isValid()) {
             $this->submission->status = SubmissionStatus::ERROR_FAILURE();
             $this->submission->save();
 
@@ -80,7 +76,7 @@ class CheckParseResultJob implements ShouldQueue
             return;
         }
 
-        if ($parseWrapper->hasMissingDrops($this->submission->type === 'full')) {
+        if ($parseWrapper->hasMissingDrops()) {
             $this->submission->status = SubmissionStatus::ERROR_MISSING_DROPS();
             $this->submission->save();
 
