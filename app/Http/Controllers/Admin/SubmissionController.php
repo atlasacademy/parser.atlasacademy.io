@@ -91,7 +91,13 @@ class SubmissionController extends Controller
         }
 
         $node = Node::query()->where('id', '=', $nodeId)->first();
-        $submission = Submission::create($node, $data['type'], $data['image'], $data['submitter']);
+        $submission = Submission::create(
+            $node,
+            $data['type'],
+            $data['image'],
+            "manual.png",
+            $data['submitter']
+        );
         Submission::parse($submission);
 
         return $this->redirectWithSuccess("/admin/node/{$nodeId}", "Successfully created submission");

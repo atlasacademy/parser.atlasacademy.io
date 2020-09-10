@@ -59,13 +59,13 @@ class SubmissionController extends Controller
             ], 422);
         }
 
-        $submission = new Submission();
-        $submission->node_id = $node->id;
-        $submission->type = $data['type'];
-        $submission->image = $data['image'];
-        $submission->filename = $data['filename'];
-        $submission->submitter = $data['submitter'] ?? null;
-        $submission->save();
+        $submission = Submission::create(
+            $node,
+            $data['type'],
+            $data['image'],
+            $data['filename'],
+            $data['submitter'] ?? null
+        );
 
         Submission::parse($submission);
 

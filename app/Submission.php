@@ -42,12 +42,13 @@ class Submission extends Model
 {
     protected $table = 'submissions';
 
-    public static function create(Node $node, string $type, string $image, string $submitter): self
+    public static function create(Node $node, string $type, string $image, string $filename, ?string $submitter): self
     {
         $submission = new self();
         $submission->node_id = $node->id;
         $submission->type = $type;
         $submission->image = $image;
+        $submission->filename = $filename;
         $submission->submitter = $submitter;
         $submission->save();
 
