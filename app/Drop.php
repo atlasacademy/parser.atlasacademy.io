@@ -32,4 +32,26 @@ class Drop extends Model
     {
         return $this->uid[0] === "E";
     }
+
+    public function isSimpleDrop(): bool
+    {
+        // if event ce
+        if (preg_match('/^E[0-9]+[A-Z]$/i', $this->uid))
+            return true;
+
+        // if event
+        if ($this->uid[0] === "E")
+            return false;
+
+        // if QP
+        if ($this->uid[0] === "Q")
+            return false;
+
+        // if EXP card
+        if (preg_match('/^B3/i', $this->uid))
+            return false;
+
+        // everything else
+        return true;
+    }
 }
