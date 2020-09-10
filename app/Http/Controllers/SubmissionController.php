@@ -11,19 +11,21 @@ use Validator;
 class SubmissionController extends Controller
 {
 
+    private const RULES = [
+        'key' => 'required|alpha_num',
+        'event' => 'required',
+        'node' => 'required',
+        'image' => 'required|url',
+        'type' => 'required|in:simple,full',
+        'filename' => 'required|string',
+        'submitter' => 'string|max:50',
+    ];
+
     public function submit(Request $request)
     {
-        $data = $request->all(['key']);
+        $data = $request->all(array_keys(self::RULES));
 
-        $validator = Validator::make($data, [
-            'key' => 'required|alpha_num',
-            'event' => 'required',
-            'node' => 'required',
-            'image' => 'required|url',
-            'type' => 'required|in:simple,full',
-            'filename' => 'required|string',
-            'submitter' => 'string|max:50',
-        ]);
+        $validator = Validator::make($data, self::RULES);
 
         if ($validator->fails()) {
             return response()->json([
