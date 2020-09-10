@@ -53,7 +53,24 @@ class ParseDrop
     {
         $code = $this->code();
 
-        return $code[0] !== "E";
+        // if event ce
+        if (preg_match('/^E[0-9]+[A-Z]$/i', $code))
+            return true;
+
+        // if event
+        if ($code[0] === "E")
+            return false;
+
+        // if QP
+        if ($code[0] === "Q")
+            return false;
+
+        // if EXP card
+        if (preg_match('/^B3/i', $code))
+            return false;
+
+        // everything else
+        return true;
     }
 
     public function isInNode(Node $node)
