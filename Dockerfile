@@ -5,6 +5,7 @@ ENV WEB_DOCUMENT_ROOT=/app/public \
     RUN_CRON="true" \
     RUN_MIGRATION="true" \
     RUN_QUEUE="true" \
+    APP_KEY="00000000000000000000000000000000" \
     APP_NAME=parser.atlasacademy.io \
     APP_URL=http://parser.test.atlasacademy.io \
     DB_CONNECTION=mysql \
@@ -16,10 +17,8 @@ ENV WEB_DOCUMENT_ROOT=/app/public \
     LOG_CHANNEL=syslog \
     QUEUE_CONNECTION=database \
     QUEUE_TABLE=jobs \
-    APP_KEY=00000000000000000000000000000000 \
-    ADMIN_KEY=00000000000000000000000000000000 \
-    ADMIN_USER="user" \
-    ADMIN_PASS="password"
+    SUBMISSION_HOST="https://submissions.atlasacademy.io" \
+    SUBMISSION_KEY="00000000000000000000000000000000"
 
 WORKDIR /app
 

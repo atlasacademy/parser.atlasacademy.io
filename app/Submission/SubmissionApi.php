@@ -7,17 +7,21 @@ use GuzzleHttp\Client;
 class SubmissionApi
 {
 
-    private const HOST = "https://submissions.atlasacademy.io";
-
     /**
      * @var Client
      */
     private $client;
+    /**
+     * @var string
+     */
+    private $host;
 
     public function __construct()
     {
+        $this->host = env('SUBMISSION_HOST');
+
         $this->client = new Client([
-            "base_uri" => self::HOST
+            "base_uri" => $this->host
         ]);
     }
 

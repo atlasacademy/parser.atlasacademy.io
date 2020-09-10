@@ -15,7 +15,7 @@ class SubmissionExport
      */
     private $node;
     /**
-     * @var string
+     * @var string | null
      */
     private $submitter;
     /**
@@ -27,7 +27,7 @@ class SubmissionExport
      */
     private $type;
 
-    public function __construct(Node $node, string $type, string $submitter)
+    public function __construct(Node $node, string $type, ?string $submitter)
     {
         $this->node = $node;
         $this->submitter = $submitter;
@@ -42,7 +42,7 @@ class SubmissionExport
         $this->drops[$key] = ($this->drops[$key] ?? 0) + $count;
     }
 
-    public function submitter(): string
+    public function submitter(): ?string
     {
         return $this->submitter;
     }
@@ -79,6 +79,11 @@ class SubmissionExport
             "token" => $this->token,
             "drops" => $drops,
         ];
+    }
+
+    public function token(): string
+    {
+        return $this->token;
     }
 
     private function dropKey(Drop $drop): string

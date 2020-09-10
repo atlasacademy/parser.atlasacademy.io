@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Event;
+use App\Node;
+use App\Submission;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -18,6 +21,8 @@ class SubmissionController extends Controller
             'node' => 'required',
             'image' => 'required|url',
             'type' => 'required|in:simple,full',
+            'filename' => 'required|string',
+            'submitter' => 'string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -34,6 +39,40 @@ class SubmissionController extends Controller
                 'message' => 'Unauthorized'
             ], 401);
         }
+
+        $event = Event::query()->where('uid', '=', $data['event'])->first();
+        if (!$event) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Event not found'
+            ], 422);
+        }
+
+        $node = Node::query()
+            ->where('event_id', '=', $event->id)
+            ->where('uid', '=', $data['node'])
+            ->first();
+        if (!$node) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Node not found'
+            ], 422);
+        }
+
+        $submission = new Submission();
+        $submission->node_id = $node->id;
+        $submission->type = $data['type'];
+        $submission->image = $data['image'];
+        $submission->filename = $data['filename'];
+        $submission->submitter = $data['submitter'] ?? null;
+        $submission->save();
+
+        Submission::parse($submission);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Created submission'
+        ]);
     }
 
 }

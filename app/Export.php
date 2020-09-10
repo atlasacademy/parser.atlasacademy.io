@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property string $payload
  * @property string $parse
- * @property string $submitter
+ * @property string|null $submitter
  * @property string|null $receipt
  * @property string|null $token
  * @property \Illuminate\Support\Carbon|null $created_at

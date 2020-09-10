@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $node_id
  * @property string $type
  * @property string $image
- * @property string $submitter
+ * @property string $filename
+ * @property string|null $submitter
  * @property \App\SubmissionStatus $status
  * @property string|null $parse
  * @property int|null $export_id
@@ -26,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereExportId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereExportOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission whereFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereNodeId($value)
