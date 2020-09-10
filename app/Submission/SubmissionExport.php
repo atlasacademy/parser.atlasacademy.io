@@ -52,7 +52,7 @@ class SubmissionExport
         $drops = [];
 
         foreach ($this->node->drops as $drop) {
-            if ($this->type === 'simple' && $drop->isSimpleDrop()) {
+            if ($this->type === 'simple' && !$drop->isSimpleDrop()) {
                 $drops[] = [
                     "uid" => $drop->uid,
                     "quantity" => $drop->quantity,
