@@ -102,7 +102,8 @@ class TemplateController extends Controller
             );
         }
 
-        $this->parserAdapter->deleteTemplate($template->name);
+        // Do not delete actual template file. fgosccnt has the template in memory and will just cause issues
+        // $this->parserAdapter->deleteTemplate($template->name);
 
         $template->delete();
 
