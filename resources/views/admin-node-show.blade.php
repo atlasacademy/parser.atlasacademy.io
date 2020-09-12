@@ -36,7 +36,9 @@
     <tbody>
     @foreach ($node->drops as $drop)
         <tr>
-            <td>{{ $drop->uid }}</td>
+            <td>
+                <a href="/admin/template/{{ $drop->uid }}">{{ $drop->uid }}</a>
+            </td>
             <td>{{ $drop->quantity }}</td>
             <td>{{ $drop->isEventOnly() ? "YES" : "NO" }}</td>
         </tr>

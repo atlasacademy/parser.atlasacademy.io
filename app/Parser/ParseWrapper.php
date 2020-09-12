@@ -144,15 +144,21 @@ class ParseWrapper
                 if ($drop->isQuestQp())
                     continue;
 
-                if (($currencies && $drop->isCurrency()) || (!$currencies && !$drop->isCurrency()))
-                    continue;
+                if ($currencies) {
+                    // there should be no default drops after it starts receiving currency
+                    if ($drop->isDefaultDrop()) {
+                        return true;
+                    } else {
+                        continue;
+                    }
+                }
 
-                if (!$currencies && $drop->isCurrency()) {
+                if ($drop->isDefaultDrop()) {
+                    continue;
+                } else {
                     $currencies = true;
                     continue;
                 }
-
-                return true;
             }
 
             return false;

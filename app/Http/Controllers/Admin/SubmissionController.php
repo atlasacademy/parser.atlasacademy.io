@@ -64,9 +64,20 @@ class SubmissionController extends Controller
     {
         Submission::parse($submission);
 
-        return $this->redirectWithError(
+        return $this->redirectWithSuccess(
             url()->previous("/admin/submission/{$submission->id}"),
             "Reparsing Submission"
+        );
+    }
+
+    public function remove(Submission $submission)
+    {
+        $submission->status = SubmissionStatus::REMOVED();
+        $submission->save();
+
+        return $this->redirectWithSuccess(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Removed Submission"
         );
     }
 
@@ -100,7 +111,10 @@ class SubmissionController extends Controller
         );
         Submission::parse($submission);
 
-        return $this->redirectWithSuccess("/admin/node/{$nodeId}", "Successfully created submission");
+        return $this->redirectWithSuccess(
+            "/admin/submission/{$submission->id}",
+            "Successfully created submission"
+        );
     }
 
 }

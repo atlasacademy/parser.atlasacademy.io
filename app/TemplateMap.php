@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
  * App\TemplateMap
  *
  * @property int $id
+ * @property string $name
  * @property string $code
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -17,24 +18,24 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|TemplateMap whereCode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TemplateMap whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TemplateMap whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|TemplateMap whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|TemplateMap whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class TemplateMap extends Model
 {
-    public $incrementing = false;
     protected $table = "template_maps";
 
-    public static function getValue(int $id, string $default): string
+    public static function getValue(string $name, string $default): string
     {
-        $map = static::query()->where('id', '=', $id)->first();
+        $map = static::query()->where('name', '=', $name)->first();
 
         return $map ? $map->code : $default;
     }
 
-    public static function hasValue(int $id): bool
+    public static function hasValue(string $name): bool
     {
-        $count = static::query()->where('id', '=', $id)->count();
+        $count = static::query()->where('name', '=', $name)->count();
 
         return $count > 0;
     }

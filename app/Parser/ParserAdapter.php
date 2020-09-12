@@ -8,6 +8,17 @@ use GuzzleHttp\Client;
 
 class ParserAdapter
 {
+    public const INPUT_DIRECTORY = '/parser/input';
+    public const OUTPUT_DIRECTORY = '/parser/output';
+    public const STAGE_DIRECTORY = '/parser/stage';
+    public const TEMPLATE_DIRECTORY = '/parser/item';
+
+    public function deleteTemplate(string $name)
+    {
+        [$path, $folder] = $this->findTemplate($name);
+
+        File::delete($path);
+    }
 
     public function emptyOutput(Submission $submission)
     {
@@ -23,6 +34,13 @@ class ParserAdapter
         return File::get($this->jsonPath($submission));
     }
 
+    public function getTemplateData(string $name): string
+    {
+        [$path, $folder] = $this->findTemplate($name);
+
+        return base64_encode(File::get($path));
+    }
+
     public function hasOutput(Submission $submission): bool
     {
         return File::exists($this->jsonPath($submission));
@@ -35,14 +53,6 @@ class ParserAdapter
         return boolval($path);
     }
 
-    public function renameUnknownCode($from, $to)
-    {
-        [$fromPath, $folder] = $this->findTemplate($from);
-
-        $toPath = $this->templatePath($folder, $to);
-        File::move($fromPath, $toPath);
-    }
-
     public function input(Submission $submission)
     {
         $client = new Client();
@@ -51,6 +61,14 @@ class ParserAdapter
         ]);
 
         File::move($this->stagePath($submission), $this->inputPath($submission));
+    }
+
+    public function renameUnknownCode($from, $to)
+    {
+        [$fromPath, $folder] = $this->findTemplate($from);
+
+        $toPath = $this->templatePath($folder, $to);
+        File::move($fromPath, $toPath);
     }
 
     private function findTemplate(string $code): array
@@ -70,27 +88,27 @@ class ParserAdapter
 
     private function inputPath(Submission $submission): string
     {
-        return "/parser/input/{$submission->id}";
+        return self::INPUT_DIRECTORY . "/{$submission->id}";
     }
 
     private function jsonPath(Submission $submission): string
     {
-        return "/parser/output/{$submission->id}.json";
+        return self::OUTPUT_DIRECTORY . "/{$submission->id}.json";
     }
 
     private function outputPath(Submission $submission): string
     {
-        return "/parser/output/{$submission->id}";
+        return self::OUTPUT_DIRECTORY . "/{$submission->id}";
     }
 
     private function stagePath(Submission $submission): string
     {
-        return "/parser/stage/{$submission->id}";
+        return self::STAGE_DIRECTORY . "/{$submission->id}";
     }
 
     private function templatePath(string $directory, string $template): string
     {
-        return "/parser/item/{$directory}/{$template}.png";
+        return self::TEMPLATE_DIRECTORY . "/{$directory}/{$template}.png";
     }
 
 }

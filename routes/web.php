@@ -34,5 +34,10 @@ Route::middleware('auth.basic')->group(function () {
     Route::get('/admin/submission/search', 'Admin\SubmissionController@search');
     Route::get('/admin/submission/{submission}', 'Admin\SubmissionController@show');
     Route::get('/admin/submission/{submission}/reparse', 'Admin\SubmissionController@reparse');
+    Route::get('/admin/submission/{submission}/remove', 'Admin\SubmissionController@remove');
     Route::post('/admin/submission/create', 'Admin\SubmissionController@create');
+
+    Route::get('/admin/template/{code}', 'Admin\TemplateController@show');
+    Route::post('/admin/template/create', 'Admin\TemplateController@create');
+    Route::post('/admin/template/remove', 'Admin\TemplateController@remove');
 });

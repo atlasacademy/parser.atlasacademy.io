@@ -18,7 +18,7 @@
             @if ($dropLine[$x]->isUnknown())
                 <br/>
                 <form method="post" action="/admin/parser/fix-unknown" style="margin-bottom: 0;">
-                    <input type="hidden" name="id" value="{{ $dropLine[$x]->id() }}"/>
+                    <input type="hidden" name="name" value="{{ $dropLine[$x]->code() }}"/>
                     <select name="code">
                         @foreach ($drops as $drop)
                             <option>{{ $drop }}</option>

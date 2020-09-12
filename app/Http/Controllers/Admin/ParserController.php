@@ -15,14 +15,14 @@ class ParserController extends Controller
     public function fixUnknown(Request $request, ParserAdapter $parserAdapter)
     {
         $data = $request->validate([
-            "id" => "required|integer",
+            "name" => "required",
             "code" => "required|alpha_num"
         ]);
 
-        $map = TemplateMap::query()->where('id', '=', $data['id'])->first();
+        $map = TemplateMap::query()->where('name', '=', $data['name'])->first();
         if (!$map) {
             $map = new TemplateMap();
-            $map->id = $data['id'];
+            $map->name = $data['name'];
         }
 
         $map->code = $data['code'];

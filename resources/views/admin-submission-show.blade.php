@@ -47,6 +47,9 @@
                     <li>
                         <a href="/admin/submission/{{ $submission->id }}/reparse">Reparse</a>
                     </li>
+                    <li>
+                        <a href="/admin/submission/{{ $submission->id }}/remove">Remove</a>
+                    </li>
                 @endif
             </ul>
         </td>
