@@ -137,7 +137,7 @@ class ParseWrapper
                 }
             );
 
-            return $dropCount === count($drops);
+            return $dropCount !== count($drops);
         } else {
             $currencies = false;
             foreach ($drops as $drop) {
