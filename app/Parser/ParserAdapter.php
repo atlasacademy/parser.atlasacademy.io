@@ -34,9 +34,12 @@ class ParserAdapter
         return File::get($this->jsonPath($submission));
     }
 
-    public function getTemplateData(string $name): string
+    public function getTemplateData(string $name): ?string
     {
         [$path, $folder] = $this->findTemplate($name);
+
+        if ($path === null)
+            return null;
 
         return base64_encode(File::get($path));
     }

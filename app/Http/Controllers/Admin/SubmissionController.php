@@ -40,7 +40,14 @@ class SubmissionController extends Controller
                 break;
         }
 
-        $submissions = $query->simplePaginate(100, ['*'], 'page', $page);
+        $submissions = $query
+            ->orderBy('id', 'DESC')
+            ->simplePaginate(100, ['*'], 'page', $page);
+
+        if ($node !== null)
+            $submissions->appends('node', $node);
+        if ($filter !== null)
+            $submissions->appends('filter', $filter);
 
         return response()->view('admin-submission-search', [
             'paginator' => $submissions,

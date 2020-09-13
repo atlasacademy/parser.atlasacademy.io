@@ -37,3 +37,5 @@
     @endforeach
     </tbody>
 </table>
+
+{{ $paginator->render() }}

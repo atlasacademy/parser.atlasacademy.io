@@ -12,12 +12,26 @@
     </li>
 </ul>
 
-<p>Nodes</p>
-
-<ul>
+<table border="1" cellpadding="5px">
+    <tr>
+        <th>ID</th>
+        <td>{{ $event->uid }}</td>
+    </tr>
+    <tr>
+        <th>Name</th>
+        <td>{{ $event->name }}</td>
+    </tr>
+    <tr>
+        <th colspan="2">
+            Nodes
+        </th>
+    </tr>
     @foreach ($event->nodes as $node)
-        <li>
-            <a href="/admin/node/{{ $node->id }}">{{ $node->name }}</a>
-        </li>
+        <tr>
+            <th>{{ $node->uid }}</th>
+            <td>
+                <a href="/admin/node/{{ $node->id }}">{{ $node->name }}</a>
+            </td>
+        </tr>
     @endforeach
-</ul>
+</table>

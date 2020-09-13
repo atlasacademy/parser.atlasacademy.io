@@ -6,11 +6,20 @@
         <td>{{ $code }}</td>
         <td></td>
     </tr>
+    <tr>
+        <th>Original</th>
+        <td>
+            <img src="https://assets.atlasacademy.io/drops/{{ $code }}.png"/>
+        </td>
+        <td></td>
+    </tr>
     @foreach ($templates as $template)
         <tr>
             <th>{{ $template['name'] }}</th>
             <td>
-                <img src="data:image/png;base64,{{ $template['data'] }}"/>
+                @if ($template['data'] !== null)
+                    <img src="data:image/png;base64,{{ $template['data'] }}"/>
+                @endif
             </td>
             <td>
                 <form method="post" action="/admin/template/remove">
@@ -29,7 +38,7 @@
     <input type="hidden" name="code" value="{{ $code }}"/>
     <p><b>Create New Template</b></p>
     <p>
-        <input type="file" name="file" />
+        <input type="file" name="file"/>
     </p>
     <p>
         <input type="submit" value="Create"/>
