@@ -18,7 +18,7 @@ class SubmissionController extends Controller
         'image' => 'required|url',
         'type' => 'required|in:simple,full',
         'filename' => 'required|string',
-        'submitter' => 'string|max:50',
+        'submitter' => 'max:50',
     ];
 
     public function submit(Request $request)
