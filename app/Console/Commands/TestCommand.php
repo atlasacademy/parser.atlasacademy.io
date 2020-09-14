@@ -2,9 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\AppendSubmissionsJob;
 use App\Jobs\CheckParseResultJob;
 use App\Jobs\ExportSubmissionJob;
 use App\Jobs\FetchParseJob;
+use App\Parser\ParseWrapper;
 use App\Submission;
 use Illuminate\Console\Command;
 
@@ -43,8 +45,9 @@ class TestCommand extends Command
     {
 //        Submission::parse(Submission::find(2));
 //        FetchParseJob::dispatch(Submission::find(3));
-//        CheckParseResultJob::dispatchNow(Submission::find(2));
-        ExportSubmissionJob::dispatchNow([1]);
+//        CheckParseResultJob::dispatchNow(Submission::find(909));
+//        ExportSubmissionJob::dispatchNow([1]);
+        AppendSubmissionsJob::dispatchNow();
 
         return 0;
     }

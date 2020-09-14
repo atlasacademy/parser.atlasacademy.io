@@ -26,7 +26,8 @@ class ParseWrapper
     {
         $lastLineNumber = $this->lastLine();
         $lastLine = $this->dropLine($lastLineNumber);
-        $matchingLine = $append->getMatchingLine($lastLine) ?? 0;
+        $matchingLine = $append->getMatchingLine($lastLine);
+        $matchingLine = $matchingLine === null ? 0 : ($matchingLine + 1);
         $lastLineOfAppend = $append->lastLine();
 
         for ($line = $matchingLine; $line <= $lastLineOfAppend; $line++) {
@@ -37,6 +38,11 @@ class ParseWrapper
                 $this->data['drops'][] = $dropData;
             }
         }
+    }
+
+    public function dropCount(): int
+    {
+        return $this->data['drop_count'];
     }
 
     /**
@@ -60,6 +66,21 @@ class ParseWrapper
         return array_map(function (array $dropData) {
             return new ParseDrop($dropData);
         }, $this->data['drops']);
+    }
+
+    public function getCountForDrop(Drop $drop): int
+    {
+        $code = $drop->uid;
+        $stack = $drop->quantity;
+
+        $drops = array_filter(
+            $this->drops(),
+            function (ParseDrop $drop) use ($code, $stack) {
+                return $drop->code() === $code && $drop->stack() === $stack;
+            }
+        );
+
+        return count($drops);
     }
 
     /**
@@ -206,24 +227,19 @@ class ParseWrapper
         return $firstDrop->stack();
     }
 
+    public function scrollPosition(): float
+    {
+        return $this->data['scroll_position'];
+    }
+
     public function toArray(): array
     {
         return $this->data;
     }
 
-    public function getCountForDrop(Drop $drop): int
+    public function totalQp(): int
     {
-        $code = $drop->uid;
-        $stack = $drop->quantity;
-
-        $drops = array_filter(
-            $this->drops(),
-            function (ParseDrop $drop) use ($code, $stack) {
-                return $drop->code() === $code && $drop->stack() === $stack;
-            }
-        );
-
-        return count($drops);
+        return $this->data['qp_total'];
     }
 
 }
