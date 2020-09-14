@@ -76,7 +76,7 @@ class CheckParseResultJob implements ShouldQueue
             return;
         }
 
-        if ($node->qp !== $parseWrapper->questQp()) {
+        if ($parseWrapper->questQp() !== null && $node->qp !== $parseWrapper->questQp()) {
             $this->submission->status = SubmissionStatus::ERROR_QP_MISMATCH();
             $this->submission->save();
 
