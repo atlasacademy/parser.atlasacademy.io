@@ -74,7 +74,6 @@ class AppendSubmissionsJob implements ShouldQueue
      */
     private function findMatches(Submission $submission, array $submissions, array $matchedIds, ?ParseWrapper $parseWrapper = null): array
     {
-        $submitter = $submission->submitter;
         if (!$parseWrapper)
             $parseWrapper = ParseWrapper::create($submission);
 
@@ -101,8 +100,10 @@ class AppendSubmissionsJob implements ShouldQueue
             if ($parseWrapper->dropCount() !== $append->dropCount())
                 continue;
 
-            // scroll position is greater than append
-            if ($parseWrapper->scrollPosition() > $append->scrollPosition())
+            // scroll position is greater than append only if both scroll positions are valid
+            if ($parseWrapper->scrollPosition() !== -1.0
+                && $append->scrollPosition() !== -1.0
+                && $parseWrapper->scrollPosition() > $append->scrollPosition())
                 continue;
 
             $lastLine = $parseWrapper->lastLine();

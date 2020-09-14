@@ -47,13 +47,8 @@ class FetchParseJob implements ShouldQueue
 
         $json = $parserAdapter->getOutput($this->submission);
 
-        $this->submission->parse = $json;
+        Submission::populateParse($this->submission, $json);
         $this->submission->status = SubmissionStatus::PARSED();
-
-        $parseWrapper = ParseWrapper::create($this->submission);
-        $this->submission->parse_hash = $parseWrapper->hash();
-        $this->submission->drop_count = $parseWrapper->dropCount();
-        $this->submission->qp_total = $parseWrapper->totalQp();
 
         $parserAdapter->emptyOutput($this->submission);
         $this->submission->save();

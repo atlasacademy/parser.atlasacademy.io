@@ -45,8 +45,8 @@ class TestCommand extends Command
     {
 //        Submission::parse(Submission::find(2));
 //        FetchParseJob::dispatchNow(Submission::find(909));
-//        CheckParseResultJob::dispatchNow(Submission::find(909));
-        ExportSubmissionJob::dispatchNow([907]);
+        CheckParseResultJob::dispatchNow(Submission::find(1089));
+//        ExportSubmissionJob::dispatchNow([907]);
 //        AppendSubmissionsJob::dispatchNow();
 
         return 0;

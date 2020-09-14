@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Jobs\ParseSubmissionJob;
+use App\Parser\ParseWrapper;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -67,6 +68,22 @@ class Submission extends Model
         $submission->save();
 
         ParseSubmissionJob::dispatch($submission);
+    }
+
+    public static function populateParse(Submission $submission, ?string $parse)
+    {
+        $submission->parse = $parse;
+
+        if ($parse === null) {
+            $submission->parse_hash = null;
+            $submission->drop_count = null;
+            $submission->qp_total = null;
+        } else {
+            $parseWrapper = ParseWrapper::create($submission);
+            $submission->parse_hash = $parseWrapper->hash();
+            $submission->drop_count = $parseWrapper->dropCount();
+            $submission->qp_total = $parseWrapper->totalQp();
+        }
     }
 
     public function node()

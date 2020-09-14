@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\CheckParseResultJob;
 use App\Node;
 use App\Parser\ParseWrapper;
 use App\Submission;
@@ -121,6 +122,35 @@ class SubmissionController extends Controller
         return $this->redirectWithSuccess(
             "/admin/submission/{$submission->id}",
             "Successfully created submission"
+        );
+    }
+
+    public function overrideDropCount(Submission $submission, Request $request)
+    {
+        $data = $request->validate([
+            'drop_count' => 'required|integer|min:0',
+        ]);
+
+        $parseWrapper = ParseWrapper::create($submission);
+        $dropCount = intval($data['drop_count']);
+
+        if ($parseWrapper->dropCount() === $dropCount) {
+            return $this->redirectWithError(
+                url()->previous("/admin/submission/{$submission->id}"),
+                "Drop count did not change"
+            );
+        }
+
+        $parse = json_decode($submission->parse, true);
+        $parse['drop_count'] = $dropCount;
+        Submission::populateParse($submission, json_encode($parse));
+        $submission->save();
+
+        CheckParseResultJob::dispatch($submission);
+
+        return $this->redirectWithSuccess(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Updated drop count"
         );
     }
 

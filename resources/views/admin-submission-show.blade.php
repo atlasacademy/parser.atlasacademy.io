@@ -72,4 +72,16 @@
             @endif
         </td>
     </tr>
+    @if ($parseWrapper)
+        <tr>
+            <th></th>
+            <td>
+                <form method="post" action="/admin/submission/{{ $submission->id }}/override-drop-count">
+                    Override Drop Count:
+                    <input type="text" name="drop_count" value="{{ $parseWrapper->dropCount() }}"/>
+                    <input type="submit"/>
+                </form>
+            </td>
+        </tr>
+    @endif
 </table>
