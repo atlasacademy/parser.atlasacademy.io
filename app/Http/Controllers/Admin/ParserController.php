@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\AppendSubmissionsJob;
 use App\Parser\ParserAdapter;
 use App\Submission;
 use App\SubmissionStatus;
@@ -39,6 +40,16 @@ class ParserController extends Controller
         return $this->redirectWithSuccess(
             url()->previous('/admin'),
             'Successfully renamed template'
+        );
+    }
+
+    public function startMatch()
+    {
+        AppendSubmissionsJob::dispatch();
+
+        return $this->redirectWithSuccess(
+            url()->previous('/admin'),
+            'Starting match'
         );
     }
 
