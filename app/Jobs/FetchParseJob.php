@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Parser\ParserAdapter;
+use App\Parser\ParseWrapper;
 use App\Submission;
 use App\SubmissionStatus;
 use File;
@@ -45,10 +46,16 @@ class FetchParseJob implements ShouldQueue
         }
 
         $json = $parserAdapter->getOutput($this->submission);
-        $parserAdapter->emptyOutput($this->submission);
 
         $this->submission->parse = $json;
         $this->submission->status = SubmissionStatus::PARSED();
+
+        $parseWrapper = ParseWrapper::create($this->submission);
+        $this->submission->parse_hash = $parseWrapper->hash();
+        $this->submission->drop_count = $parseWrapper->dropCount();
+        $this->submission->qp_total = $parseWrapper->totalQp();
+
+        $parserAdapter->emptyOutput($this->submission);
         $this->submission->save();
 
         CheckParseResultJob::dispatch($this->submission);

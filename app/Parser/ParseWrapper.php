@@ -197,6 +197,29 @@ class ParseWrapper
         );
     }
 
+    public function hash(): ?string
+    {
+        $clonedData = json_decode(json_encode($this->data), true);
+        if (!$clonedData || !is_array($clonedData))
+            return null;
+
+        $clonedData = array_intersect_key(
+            $clonedData,
+            [
+                'status' => null,
+                'qp_total' => null,
+                'qp_gained' => null,
+                'drop_count' => null,
+                'drops_found' => null,
+                'drops' => null,
+            ]
+        );
+
+        $json = json_encode($clonedData);
+
+        return hash('sha256', $json);
+    }
+
     public function isValid(): bool
     {
         if (!$this->data || !is_array($this->data))

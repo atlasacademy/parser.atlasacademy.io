@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $submitter
  * @property \App\SubmissionStatus $status
  * @property string|null $parse
+ * @property string|null $parse_hash
+ * @property int|null $drop_count
+ * @property int|null $qp_total
  * @property int|null $export_id
  * @property int|null $export_order
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -25,6 +28,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission whereDropCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereExportId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereExportOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereFilename($value)
@@ -32,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereNodeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereParse($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission whereParseHash($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission whereQpTotal($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereSubmitter($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereType($value)

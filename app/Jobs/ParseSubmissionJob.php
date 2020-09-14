@@ -33,6 +33,9 @@ class ParseSubmissionJob implements ShouldQueue
 
         $this->submission->status = SubmissionStatus::PARSING();
         $this->submission->parse = null;
+        $this->submission->parse_hash = null;
+        $this->submission->drop_count = null;
+        $this->submission->qp_total = null;
         $this->submission->save();
 
         FetchParseJob::dispatch($this->submission)->delay(now()->addSeconds(30));

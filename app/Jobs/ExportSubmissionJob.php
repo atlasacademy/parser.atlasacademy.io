@@ -37,6 +37,15 @@ class ExportSubmissionJob implements ShouldQueue
         $parseWrapper = $this->makeParseWrapper($submissions);
         $submissionExport = $this->makeSubmissionExport($parseWrapper, $submissions);
 
+        if ($this->isDuplicate($submissions)) {
+            foreach ($submissions as $submission) {
+                $submission->status = SubmissionStatus::ERROR_DUPLICATE()->getValue();
+                $submission->save();
+            }
+
+            return;
+        }
+
         $export = new Export();
         $export->node_id = $node->id;
         $export->type = $type;
@@ -114,5 +123,34 @@ class ExportSubmissionJob implements ShouldQueue
         }
 
         return $submissionExport;
+    }
+
+    /**
+     * @param Submission[] $submissions
+     * @return bool
+     */
+    private function isDuplicate(array $submissions): bool
+    {
+        if (count($submissions) > 1)
+            return false;
+
+        $submission = $submissions[0];
+        if (!$submission->parse_hash)
+            return false;
+
+        $query = Submission::query();
+        $query->where('id', '!=', $submission->id);
+        $query->where('node_id', '=', $submission->node_id);
+        $query->where('submitter', '=', $submission->submitter);
+        $query->whereNotNull('export_id');
+
+        // if they are max qp, can't use hash value to remove duplicates. just going to have to check filenames
+        if ($submission->qp_total === 999999999) {
+            $query->where('filename', '=', $submission->filename);
+        } else {
+            $query->where('parse_hash', '=', $submission->parse_hash);
+        }
+
+        return $query->count() > 0;
     }
 }
