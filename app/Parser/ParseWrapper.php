@@ -215,6 +215,15 @@ class ParseWrapper
             ]
         );
 
+        $clonedData['drops'] = array_map(function (array $drop) {
+            return array_intersect_key($drop, [
+                'name' => null,
+                'stack' => null,
+                'x' => null,
+                'y' => null,
+            ]);
+        }, $clonedData['drops']);
+
         $json = json_encode($clonedData);
 
         return hash('sha256', $json);
