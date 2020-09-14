@@ -39,7 +39,7 @@ class ExportSubmissionJob implements ShouldQueue
 
         if ($this->isDuplicate($submissions)) {
             foreach ($submissions as $submission) {
-                $submission->status = SubmissionStatus::ERROR_DUPLICATE()->getValue();
+                $submission->status = SubmissionStatus::REMOVED_DUPLICATE()->getValue();
                 $submission->save();
             }
 

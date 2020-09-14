@@ -36,7 +36,7 @@ class SubmissionController extends Controller
                 $query->whereBetween('status', [10, 19]);
                 break;
             case "removed":
-                $query->where('status', '=', SubmissionStatus::REMOVED()->getValue());
+                $query->whereBetween('status', [1, 9]);
                 break;
         }
 
