@@ -72,7 +72,7 @@
             @endif
         </td>
     </tr>
-    @if ($parseWrapper)
+    @if ($parseWrapper && $submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
         <tr>
             <th></th>
             <td>
