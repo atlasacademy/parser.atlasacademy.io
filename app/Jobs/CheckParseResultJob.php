@@ -76,15 +76,15 @@ class CheckParseResultJob implements ShouldQueue
             return;
         }
 
-        if ($parseWrapper->hasMissingDrops()) {
-            $this->submission->status = SubmissionStatus::ERROR_MISSING_DROPS();
+        if ($node->qp !== $parseWrapper->questQp()) {
+            $this->submission->status = SubmissionStatus::ERROR_QP_MISMATCH();
             $this->submission->save();
 
             return;
         }
 
-        if ($node->qp !== $parseWrapper->questQp()) {
-            $this->submission->status = SubmissionStatus::ERROR_QP_MISMATCH();
+        if ($parseWrapper->hasMissingDrops()) {
+            $this->submission->status = SubmissionStatus::ERROR_MISSING_DROPS();
             $this->submission->save();
 
             return;
