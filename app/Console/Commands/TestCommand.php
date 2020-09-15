@@ -6,6 +6,7 @@ use App\Jobs\AppendSubmissionsJob;
 use App\Jobs\CheckParseResultJob;
 use App\Jobs\ExportSubmissionJob;
 use App\Jobs\FetchParseJob;
+use App\Jobs\ParseSubmissionJob;
 use App\Parser\ParseWrapper;
 use App\Submission;
 use Illuminate\Console\Command;
@@ -43,9 +44,9 @@ class TestCommand extends Command
      */
     public function handle()
     {
-//        Submission::parse(Submission::find(2));
+        ParseSubmissionJob::dispatchNow(Submission::find(1420));
 //        FetchParseJob::dispatchNow(Submission::find(909));
-        CheckParseResultJob::dispatchNow(Submission::find(1089));
+//        CheckParseResultJob::dispatchNow(Submission::find(1089));
 //        ExportSubmissionJob::dispatchNow([907]);
 //        AppendSubmissionsJob::dispatchNow();
 

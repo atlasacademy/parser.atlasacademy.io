@@ -74,15 +74,18 @@ class Submission extends Model
     {
         $submission->parse = $parse;
 
-        if ($parse === null) {
-            $submission->parse_hash = null;
-            $submission->drop_count = null;
-            $submission->qp_total = null;
-        } else {
+        $submission->parse_hash = null;
+        $submission->drop_count = null;
+        $submission->qp_total = null;
+
+        if ($parse !== null) {
             $parseWrapper = ParseWrapper::create($submission);
-            $submission->parse_hash = $parseWrapper->hash();
-            $submission->drop_count = $parseWrapper->dropCount();
-            $submission->qp_total = $parseWrapper->totalQp();
+
+            if ($parseWrapper->isValid()) {
+                $submission->parse_hash = $parseWrapper->hash();
+                $submission->drop_count = $parseWrapper->dropCount();
+                $submission->qp_total = $parseWrapper->totalQp();
+            }
         }
     }
 
