@@ -154,4 +154,33 @@ class SubmissionController extends Controller
         );
     }
 
+    public function overrideQpTotal(Submission $submission, Request $request)
+    {
+        $data = $request->validate([
+            'qp_total' => 'required|integer|min:0',
+        ]);
+
+        $parseWrapper = ParseWrapper::create($submission);
+        $qpTotal = intval($data['qp_total']);
+
+        if ($parseWrapper->totalQp() === $qpTotal) {
+            return $this->redirectWithError(
+                url()->previous("/admin/submission/{$submission->id}"),
+                "QP Total did not change"
+            );
+        }
+
+        $parse = json_decode($submission->parse, true);
+        $parse['qp_total'] = $qpTotal;
+        Submission::populateParse($submission, json_encode($parse));
+        $submission->save();
+
+        CheckParseResultJob::dispatch($submission);
+
+        return $this->redirectWithSuccess(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Updated QP Total"
+        );
+    }
+
 }

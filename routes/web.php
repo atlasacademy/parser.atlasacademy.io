@@ -38,6 +38,7 @@ Route::middleware('auth.basic')->group(function () {
     Route::get('/admin/submission/{submission}/remove', 'Admin\SubmissionController@remove');
     Route::post('/admin/submission/create', 'Admin\SubmissionController@create');
     Route::post('/admin/submission/{submission}/override-drop-count', 'Admin\SubmissionController@overrideDropCount');
+    Route::post('/admin/submission/{submission}/override-qp-total', 'Admin\SubmissionController@overrideQpTotal');
 
     Route::get('/admin/template/{code}', 'Admin\TemplateController@show');
     Route::post('/admin/template/create', 'Admin\TemplateController@create');

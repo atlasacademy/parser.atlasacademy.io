@@ -83,5 +83,15 @@
                 </form>
             </td>
         </tr>
+        <tr>
+            <th></th>
+            <td>
+                <form method="post" action="/admin/submission/{{ $submission->id }}/override-qp-total">
+                    Override Drop Count:
+                    <input type="text" name="qp_total" value="{{ $parseWrapper->totalQp() }}"/>
+                    <input type="submit"/>
+                </form>
+            </td>
+        </tr>
     @endif
 </table>
