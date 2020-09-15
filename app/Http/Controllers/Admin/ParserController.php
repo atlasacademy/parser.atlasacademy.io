@@ -43,6 +43,20 @@ class ParserController extends Controller
         );
     }
 
+    public function parseFailed()
+    {
+        $submissions = Submission::query()->whereBetween('status', [20, 29])->get();
+
+        foreach ($submissions as $submission) {
+            Submission::parse($submission);
+        }
+
+        return $this->redirectWithSuccess(
+            url()->previous('/admin'),
+            'Starting parse'
+        );
+    }
+
     public function startMatch()
     {
         AppendSubmissionsJob::dispatch();

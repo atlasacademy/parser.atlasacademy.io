@@ -19,4 +19,7 @@
     <li>
         <a href="/admin/parser/start-match">Trigger Match Job</a>
     </li>
+    <li>
+        <a href="/admin/parser/parse-failed">ReParse Failed</a>
+    </li>
 </ul>

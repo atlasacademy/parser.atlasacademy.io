@@ -30,6 +30,7 @@ Route::middleware('auth.basic')->group(function () {
     Route::post('/admin/node/{node}/update-qp', 'Admin\NodeController@updateQp');
 
     Route::post('/admin/parser/fix-unknown', 'Admin\ParserController@fixUnknown');
+    Route::post('/admin/parser/parse-failed', 'Admin\ParserController@parseFailed');
     Route::get('/admin/parser/start-match', 'Admin\ParserController@startMatch');
 
     Route::get('/admin/submission/search', 'Admin\SubmissionController@search');
