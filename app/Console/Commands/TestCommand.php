@@ -44,7 +44,7 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        ParseSubmissionJob::dispatchNow(Submission::find(1420));
+        ParseSubmissionJob::dispatchNow(Submission::find(1670));
 //        FetchParseJob::dispatchNow(Submission::find(909));
 //        CheckParseResultJob::dispatchNow(Submission::find(1089));
 //        ExportSubmissionJob::dispatchNow([907]);
