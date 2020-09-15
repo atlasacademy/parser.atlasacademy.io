@@ -67,12 +67,12 @@
     <tr>
         <th>Map</th>
         <td>
-            @if ($parseWrapper)
+            @if ($parseWrapper && $parseWrapper->isValid())
                 @include('parse-map', ['parseWrapper' => $parseWrapper, 'node' => $submission->node, 'drops' => $drops])
             @endif
         </td>
     </tr>
-    @if ($parseWrapper && $submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
+    @if ($parseWrapper && $parseWrapper->isValid() && $submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
         <tr>
             <th></th>
             <td>
