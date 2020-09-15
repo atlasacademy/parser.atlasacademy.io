@@ -43,7 +43,7 @@
         <th>Actions</th>
         <td>
             <ul>
-                @if ($submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
+                @if ($submission->isErrorStatus())
                     <li>
                         <a href="/admin/submission/{{ $submission->id }}/reparse">Reparse</a>
                     </li>
@@ -68,11 +68,17 @@
         <th>Map</th>
         <td>
             @if ($parseWrapper && $parseWrapper->isValid())
-                @include('parse-map', ['parseWrapper' => $parseWrapper, 'node' => $submission->node, 'drops' => $drops])
+                @include('parse-map', [
+                    'parseWrapper' => $parseWrapper,
+                    'node' => $submission->node,
+                    'drops' => $drops,
+                    'override' => $submission->isErrorStatus(),
+                    'submissionId' => $submission->id
+                ])
             @endif
         </td>
     </tr>
-    @if ($parseWrapper && $parseWrapper->isValid() && $submission->status->getValue() >= 20 && $submission->status->getValue() < 30)
+    @if ($parseWrapper && $parseWrapper->isValid() && $submission->isErrorStatus())
         <tr>
             <th></th>
             <td>

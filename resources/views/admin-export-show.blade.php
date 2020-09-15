@@ -42,7 +42,7 @@
     <tr>
         <th>Map</th>
         <td>
-            @include('parse-map', ['parseWrapper' => $parseWrapper, 'node' => $node, 'drops' => []])
+            @include('parse-map', ['parseWrapper' => $parseWrapper, 'node' => $node, 'drops' => [], 'override' => false])
         </td>
     </tr>
 </table>

@@ -154,6 +154,63 @@ class SubmissionController extends Controller
         );
     }
 
+    public function overrideDropStack(Submission $submission, Request $request)
+    {
+        $data = $request->validate([
+            'x' => 'required|integer|min:0',
+            'y' => 'required|integer|min:0',
+            'stack' => 'required|integer|min:1',
+        ]);
+
+        $x = intval($data['x']);
+        $y = intval($data['y']);
+        $stack = intval($data['stack']);
+        $found = false;
+
+        $parse = json_decode($submission->parse, true);
+        foreach ($parse['drops'] as $k => $drop) {
+            // if not matching, skip
+            if ($drop['x'] !== $x || $drop['y'] !== $y)
+                continue;
+
+            // if already found, means double match. exit
+            if ($found) {
+                return $this->redirectWithError(
+                    url()->previous("/admin/submission/{$submission->id}"),
+                    "Found two drops with those coordinates"
+                );
+            }
+
+            // no change
+            if ($drop['stack'] === $stack) {
+                return $this->redirectWithError(
+                    url()->previous("/admin/submission/{$submission->id}"),
+                    "Drop stack did not change"
+                );
+            }
+
+            $parse['drops'][$k]['stack'] = $stack;
+            $found = true;
+        }
+
+        if (!$found) {
+            return $this->redirectWithError(
+                url()->previous("/admin/submission/{$submission->id}"),
+                "Those coordinates could not be found"
+            );
+        }
+
+        Submission::populateParse($submission, json_encode($parse));
+        $submission->save();
+
+        CheckParseResultJob::dispatch($submission);
+
+        return $this->redirectWithSuccess(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Updated drop stack"
+        );
+    }
+
     public function overrideQpTotal(Submission $submission, Request $request)
     {
         $data = $request->validate([

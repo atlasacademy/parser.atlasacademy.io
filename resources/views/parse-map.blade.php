@@ -3,6 +3,8 @@
  * @var \App\Parser\ParseWrapper $parseWrapper
  * @var \App\Node $node
  * @var string[] $drops
+ * @var bool $override
+ * @var int|null $submissionId
  */
 ?>
 
@@ -37,6 +39,17 @@
             @elseif ($submission->type === "simple" && $dropLine[$x]->isDefaultDrop() && !$dropLine[$x]->isInNode($node))
                 <br/>
                 <span style="color: red">INVALID</span>
+            @endif
+
+            @if ($override)
+                <br/><hr/>
+                <div>Overrides</div>
+                <form method="post" action="/admin/submission/{{ $submissionId }}/override-drop-stack" style="margin:0;">
+                    <input type="hidden" name="x" value="{{ $x }}"/>
+                    <input type="hidden" name="y" value="{{ $y }}"/>
+                    <input type="text" name="stack" value="{{ $dropLine[$x]->stack() }}" size="4"/>
+                    <input type="submit" value="=> Stack"/>
+                </form>
             @endif
         </td>
         <?php endfor; ?>

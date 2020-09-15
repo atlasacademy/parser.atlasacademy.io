@@ -99,6 +99,34 @@ class Submission extends Model
         return new SubmissionStatus($value);
     }
 
+    public function isErrorStatus(): bool
+    {
+        $status = $this->status->getValue();
+
+        return $status >= 20 && $status < 30;
+    }
+
+    public function isPendingStatus(): bool
+    {
+        $status = $this->status->getValue();
+
+        return $status >= 10 && $status < 20;
+    }
+
+    public function isRemovedStatus(): bool
+    {
+        $status = $this->status->getValue();
+
+        return $status >= 1 && $status < 10;
+    }
+
+    public function isSuccessStatus(): bool
+    {
+        $status = $this->status->getValue();
+
+        return $status >= 30;
+    }
+
     public function setStatusAttribute($value)
     {
         if ($value instanceof SubmissionStatus) {
