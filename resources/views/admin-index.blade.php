@@ -11,6 +11,12 @@
         <a href="/admin/submission/search?filter=failed">Failed Submissions</a>
     </li>
     <li>
+        <a href="/admin/submission/search?filter=removed">Removed Submissions</a>
+    </li>
+    <li>
+        <a href="/admin/submission/search">All Submissions</a>
+    </li>
+    <li>
         <a href="/admin/parser/start-match">Trigger Match Job</a>
     </li>
 </ul>
