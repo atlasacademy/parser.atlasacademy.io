@@ -199,32 +199,21 @@ class ParseWrapper
 
     public function hash(): ?string
     {
-        $clonedData = json_decode(json_encode($this->data), true);
-        if (!$clonedData || !is_array($clonedData))
+        if (!$this->isValid())
             return null;
 
-        $clonedData = array_intersect_key(
-            $clonedData,
-            [
-                'status' => null,
-                'qp_total' => null,
-                'qp_gained' => null,
-                'drop_count' => null,
-                'drops_found' => null,
-                'drops' => null,
-            ]
-        );
+        $hashableData = [
+            'qp_total' => $this->totalQp(),
+            'drop_count' => $this->dropCount(),
+            'drops' => array_map(function (ParseDrop $drop) {
+                return [
+                    'code' => $drop->code(),
+                    'stack' => $drop->stack(),
+                ];
+            }, $this->drops()),
+        ];
 
-        $clonedData['drops'] = array_map(function (array $drop) {
-            return array_intersect_key($drop, [
-                'name' => null,
-                'stack' => null,
-                'x' => null,
-                'y' => null,
-            ]);
-        }, $clonedData['drops']);
-
-        $json = json_encode($clonedData);
+        $json = json_encode($hashableData);
 
         return hash('sha256', $json);
     }
