@@ -89,13 +89,13 @@
                 </form>
 
                 <form method="post" action="/admin/submission/{{ $submission->id }}/override-qp-total">
-                    Drop Count:
+                    QP Total:
                     <input type="text" name="qp_total" value="{{ $parseWrapper->totalQp() }}"/>
                     <input type="submit" value="Update"/>
                 </form>
 
                 <form method="post" action="/admin/submission/{{ $submission->id }}/override-scroll-position">
-                    Drop Count:
+                    Scroll Position:
                     <input type="text" name="scroll_position" value="{{ $parseWrapper->scrollPosition() }}"/>
                     <input type="submit" value="Update"/>
                 </form>
