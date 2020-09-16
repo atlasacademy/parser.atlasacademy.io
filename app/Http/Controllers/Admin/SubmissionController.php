@@ -240,4 +240,25 @@ class SubmissionController extends Controller
         );
     }
 
+    public function overrideScrollPosition(Submission $submission, Request $request)
+    {
+        $data = $request->validate([
+            'scroll_position' => 'required|numeric|min:0',
+        ]);
+
+        $scrollPosition = floatval($data['scroll_position']);
+        $parse = json_decode($submission->parse, true);
+        $parse['scroll_position'] = $scrollPosition;
+
+        Submission::populateParse($submission, json_encode($parse));
+        $submission->save();
+
+        CheckParseResultJob::dispatch($submission);
+
+        return $this->redirectWithSuccess(
+            url()->previous("/admin/submission/{$submission->id}"),
+            "Updated Scroll Position"
+        );
+    }
+
 }

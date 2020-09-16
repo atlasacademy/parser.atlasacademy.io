@@ -80,22 +80,24 @@
     </tr>
     @if ($parseWrapper && $parseWrapper->isValid() && $submission->isErrorStatus())
         <tr>
-            <th></th>
+            <th>Override</th>
             <td>
                 <form method="post" action="/admin/submission/{{ $submission->id }}/override-drop-count">
-                    Override Drop Count:
+                    Drop Count:
                     <input type="text" name="drop_count" value="{{ $parseWrapper->dropCount() }}"/>
-                    <input type="submit"/>
+                    <input type="submit" value="Update"/>
                 </form>
-            </td>
-        </tr>
-        <tr>
-            <th></th>
-            <td>
+
                 <form method="post" action="/admin/submission/{{ $submission->id }}/override-qp-total">
-                    Override Drop Count:
+                    Drop Count:
                     <input type="text" name="qp_total" value="{{ $parseWrapper->totalQp() }}"/>
-                    <input type="submit"/>
+                    <input type="submit" value="Update"/>
+                </form>
+
+                <form method="post" action="/admin/submission/{{ $submission->id }}/override-scroll-position">
+                    Drop Count:
+                    <input type="text" name="scroll_position" value="{{ $parseWrapper->scrollPosition() }}"/>
+                    <input type="submit" value="Update"/>
                 </form>
             </td>
         </tr>
