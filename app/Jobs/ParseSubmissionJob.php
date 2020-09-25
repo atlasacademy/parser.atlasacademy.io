@@ -15,6 +15,8 @@ use Illuminate\Queue\SerializesModels;
 
 class ParseSubmissionJob implements ShouldQueue
 {
+    private const MAX_CONCURRENT = 20;
+
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
@@ -29,6 +31,15 @@ class ParseSubmissionJob implements ShouldQueue
 
     public function handle(ParserAdapter $parserAdapter)
     {
+        $count = Submission::query()
+            ->where('status', '=', SubmissionStatus::PARSING()->getValue())
+            ->count();
+
+        if ($count > self::MAX_CONCURRENT) {
+            // Too many pending submissions. Do not queue this submission yet
+            return;
+        }
+
         $parserAdapter->input($this->submission);
 
         Submission::populateParse($this->submission, null);

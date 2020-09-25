@@ -23,3 +23,20 @@
         <a href="/admin/parser/parse-failed">ReParse Failed</a>
     </li>
 </ul>
+
+<table border="1" cellpadding="5px">
+    <tbody>
+    <tr>
+        <th>Failed Submissions</th>
+        <td>{{ $failedCount }}</td>
+    </tr>
+    <tr>
+        <th>Pending Submissions</th>
+        <td>{{ $pendingCount }}</td>
+    </tr>
+    <tr>
+        <th>Jobs</th>
+        <td>{{ $jobCount }}</td>
+    </tr>
+    </tbody>
+</table>
