@@ -94,6 +94,9 @@ class ParseDrop
 
         $code = $this->data['name'];
 
+        if ($code[0] === "Q")
+            return $this->unknown = false;
+
         return $this->unknown = !TemplateMap::hasValue($code);
     }
 
