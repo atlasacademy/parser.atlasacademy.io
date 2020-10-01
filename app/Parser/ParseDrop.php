@@ -27,12 +27,14 @@ class ParseDrop
         if ($this->isQuestQp())
             return $this->code = "QUEST_QP";
 
+        if ($this->isQp()) {
+            [$code, $stack] = $this->getQpInfo();
+
+            return $this->code = $code;
+        }
+
         $code = $this->data['name'];
         $code = TemplateMap::getValue($code, $code);
-
-        if ($code[0] === "Q") {
-            [$code, $stack] = $this->getQpInfo();
-        }
 
         return $this->code = $code;
     }
@@ -54,8 +56,7 @@ class ParseDrop
         if ($code[0] === "E")
             return false;
 
-        // if QP
-        if ($code[0] === "Q")
+        if ($this->isQp())
             return false;
 
         // if EXP card
@@ -79,6 +80,18 @@ class ParseDrop
         return false;
     }
 
+    public function isQp(): bool
+    {
+        $code = $this->data['name'];
+        $code = TemplateMap::getValue($code, $code);
+
+        if ($code === "QP"
+            || preg_match('/^Q[0-9]+$/', $code))
+            return true;
+
+        return false;
+    }
+
     public function isQuestQp(): bool
     {
         return $this->data['id'] === self::QUEST_QP;
@@ -89,13 +102,10 @@ class ParseDrop
         if ($this->unknown !== null)
             return $this->unknown;
 
-        if ($this->isQuestQp())
+        if ($this->isQuestQp() || $this->isQp())
             return $this->unknown = false;
 
         $code = $this->data['name'];
-
-        if ($code[0] === "Q")
-            return $this->unknown = false;
 
         return $this->unknown = !TemplateMap::hasValue($code);
     }
@@ -112,13 +122,13 @@ class ParseDrop
 
     public function stack(): int
     {
-        $code = $this->code();
-
-        if ($code[0] === "Q") {
+        if ($this->isQp()) {
             [$code, $stack] = $this->getQpInfo();
 
             return $stack;
         }
+
+        $code = $this->code();
 
         return $this->data['stack'];
     }
