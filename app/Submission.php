@@ -62,14 +62,16 @@ class Submission extends Model
         return $submission;
     }
 
-    public static function parse(Submission $submission)
+    public static function parse(Submission $submission, bool $force = false)
     {
         $submission->status = SubmissionStatus::QUEUED();
         $submission->save();
 
-        $pendingCount = Submission::query()->whereBetween('status', [10, 19])->count();
-        if ($pendingCount > 20)
-            return;
+        if (!$force) {
+            $pendingCount = Submission::query()->whereBetween('status', [10, 19])->count();
+            if ($pendingCount > 20)
+                return;
+        }
 
         ParseSubmissionJob::dispatch($submission);
     }

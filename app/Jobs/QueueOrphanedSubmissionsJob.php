@@ -37,7 +37,7 @@ class QueueOrphanedSubmissionsJob implements ShouldQueue
             ->get();
 
         foreach ($submissions as $submission) {
-            Submission::parse($submission);
+            Submission::parse($submission, true);
         }
     }
 }
