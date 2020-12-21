@@ -67,6 +67,10 @@ class Submission extends Model
         $submission->status = SubmissionStatus::QUEUED();
         $submission->save();
 
+        $pendingCount = Submission::query()->whereBetween('status', [10, 19])->count();
+        if ($pendingCount > 20)
+            return;
+
         ParseSubmissionJob::dispatch($submission);
     }
 

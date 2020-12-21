@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Submission;
-use DB;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -31,10 +30,6 @@ class QueueOrphanedSubmissionsJob implements ShouldQueue
      */
     public function handle()
     {
-        $jobs = DB::table('jobs')->count();
-        if ($jobs > 1)
-            return;
-
         $submissions = Submission::query()
             ->whereBetween('status', [10, 19])
             ->orderBy('status', 'asc')
