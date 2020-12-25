@@ -57,6 +57,21 @@ class ParserController extends Controller
         );
     }
 
+    public function removeFailed()
+    {
+        $submissions = Submission::query()->whereBetween('status', [20, 29])->get();
+
+        foreach ($submissions as $submission) {
+            $submission->status = SubmissionStatus::REMOVED();
+            $submission->save();
+        }
+
+        return $this->redirectWithSuccess(
+            url()->previous('/admin'),
+            'Removed all failed submissions'
+        );
+    }
+
     public function startMatch()
     {
         AppendSubmissionsJob::dispatch();

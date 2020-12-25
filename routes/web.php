@@ -31,6 +31,7 @@ Route::middleware('auth.basic')->group(function () {
 
     Route::post('/admin/parser/fix-unknown', 'Admin\ParserController@fixUnknown');
     Route::get('/admin/parser/parse-failed', 'Admin\ParserController@parseFailed');
+    Route::get('/admin/parser/remove-failed', 'Admin\ParserController@removeFailed');
     Route::get('/admin/parser/start-match', 'Admin\ParserController@startMatch');
 
     Route::get('/admin/submission/search', 'Admin\SubmissionController@search');

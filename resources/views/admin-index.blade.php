@@ -22,6 +22,9 @@
     <li>
         <a href="/admin/parser/parse-failed">ReParse Failed</a>
     </li>
+    <li>
+        <a href="/admin/parser/remove-failed">Remove Failed</a>
+    </li>
 </ul>
 
 <table border="1" cellpadding="5px">
