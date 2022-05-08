@@ -25,30 +25,31 @@
 
 <table border="1" cellpadding="5px">
     <tr>
-        <th colspan="2">Details</th>
+        <th colspan="3">Details</th>
     </tr>
     <tr>
         <th>Event</th>
-        <td>{{ $node->event->name }}</td>
+        <td colspan="2">{{ $node->event->name }}</td>
     </tr>
     <tr>
         <th>ID</th>
-        <td>{{ $node->uid }}</td>
+        <td colspan="2">{{ $node->uid }}</td>
     </tr>
     <tr>
         <th>Name</th>
-        <td>{{ $node->name }}</td>
+        <td colspan="2">{{ $node->name }}</td>
     </tr>
     <tr>
         <th>QP</th>
-        <td>{{ $node->qp }}</td>
+        <td colspan="2">{{ $node->qp }}</td>
     </tr>
     <tr>
-        <th colspan="2">Drops</th>
+        <th colspan="3">Drops</th>
     </tr>
     @foreach ($node->drops as $drop)
         <tr>
-            <td>{{ $drop->quantity }} X</td>
+            <td>{{ $drop->quantity }} ×</td>
+            <td><img src="https://assets.atlasacademy.io/drops/{{ $drop->uid }}.png" style="height: 3em;"/></td>
             <td>
                 <a href="/admin/template/{{ $drop->uid }}">{{ $drop->uid }}</a>
             </td>
