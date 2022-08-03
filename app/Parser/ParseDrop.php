@@ -148,15 +148,15 @@ class ParseDrop
         $stack = $this->data['stack'];
 
         switch ($stack) {
-            case 1000:
+            case 10000:
                 return ['Q010', 1];
-            case 1500:
+            case 15000:
                 return ['Q015', 1];
-            case 2000:
+            case 20000:
                 return ['Q020', 1];
-            case 3000:
+            case 30000:
                 return ['Q030', 1];
-            case 5000:
+            case 50000:
                 return ['Q050', 1];
             default:
                 return ['QP00', $stack];
