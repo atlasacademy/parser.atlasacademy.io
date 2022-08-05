@@ -29,7 +29,9 @@
     </tr>
     <tr>
         <th>Event</th>
-        <td colspan="2">{{ $node->event->name }}</td>
+        <td colspan="2">
+            <a href="/admin/event/{{ $node->event->id }}">{{ $node->event->name }}</a>
+        </td>
     </tr>
     <tr>
         <th>ID</th>
