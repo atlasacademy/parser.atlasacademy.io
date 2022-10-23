@@ -13,6 +13,7 @@
         <th>ID</th>
         <th>Image</th>
         <th>Type</th>
+        <th>Node</th>
         <th>Submitter</th>
         <th>Status</th>
         <th>Created</th>
@@ -29,6 +30,7 @@
                 <a href="{{ $submission->image }}" target="_blank">Link</a>
             </td>
             <td>{{ $submission->type }}</td>
+            <td>{{ $submission->node_id }}</td>
             <td>{{ $submission->submitter }}</td>
             <td>{{ $submission->status->getKey() }}</td>
             <td>{{ $submission->created_at }}</td>
