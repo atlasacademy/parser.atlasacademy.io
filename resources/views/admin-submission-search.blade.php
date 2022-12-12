@@ -30,7 +30,9 @@
                 <a href="{{ $submission->image }}" target="_blank">Link</a>
             </td>
             <td>{{ $submission->type }}</td>
-            <td>{{ $submission->node_id }}</td>
+            <td>
+                <a href="/admin/node/{{ $submission->node_id }}">{{ $submission->node->name }}</a>
+            </td>
             <td>{{ $submission->submitter }}</td>
             <td>{{ $submission->status->getKey() }}</td>
             <td>{{ $submission->created_at }}</td>

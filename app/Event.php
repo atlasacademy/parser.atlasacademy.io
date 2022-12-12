@@ -30,6 +30,6 @@ class Event extends Model
 
     public function nodes()
     {
-        return $this->hasMany(Node::class);
+        return $this->hasMany(Node::class)->orderBy('id');
     }
 }

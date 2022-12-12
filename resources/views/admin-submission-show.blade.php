@@ -16,7 +16,7 @@
     <tr>
         <th>Node</th>
         <td>
-            <a href="/admin/node/{{ $submission->node->id }}">Link</a>
+            <a href="/admin/node/{{ $submission->node->id }}">{{ $submission->node->name }}</a>
         </td>
     </tr>
     <tr>
